@@ -1,6 +1,6 @@
 name: horizontal_blocked_scroll_physics
 description: A ScrollPhysics class that blocks movement in the horizontal axis.
-version: 1.0.1
+version: 1.0.2
 homepage: https://github.com/Alpha-health/horizontal_blocked_scroll_physics
 repository: https://github.com/Alpha-health/horizontal_blocked_scroll_physics
 issue_tracker: https://github.com/Alpha-health/horizontal_blocked_scroll_physics/issues

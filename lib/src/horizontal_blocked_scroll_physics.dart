@@ -81,14 +81,11 @@ class HorizontalBlockedScrollPhysics extends ScrollPhysics {
       return value - position.maxScrollExtent;
     }
 
-    if (direction.isLeft && blockLeft) {
-      // block left
+    if ((direction.isLeft && blockLeft) || (!direction.isLeft && blockRight)) {
+      // block horizontal
       return value - position.pixels;
-    } else if (!direction.isLeft && blockRight) {
-      // block right
-      return value + position.pixels;
     }
 
-    return 0.0;
+    return super.applyBoundaryConditions(position, value);
   }
 }

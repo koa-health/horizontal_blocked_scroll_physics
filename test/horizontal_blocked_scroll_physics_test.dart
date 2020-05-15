@@ -73,7 +73,7 @@ void main() {
     var value = 40.0;
     var result = hs.applyBoundaryConditions(position, value);
 
-    expect(result, value + position.pixels);
+    expect(result, value - position.pixels);
   });
 
   test('if blockRight and blockLeft are true it will block movement', () {
@@ -91,7 +91,7 @@ void main() {
     // right
     hs.applyPhysicsToUserOffset(null, -12);
     var result = hs.applyBoundaryConditions(position, value);
-    expect(result, value + position.pixels);
+    expect(result, value - position.pixels);
 
     // left
     hs.applyPhysicsToUserOffset(null, 12);

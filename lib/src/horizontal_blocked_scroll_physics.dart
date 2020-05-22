@@ -1,48 +1,47 @@
 import 'package:flutter/material.dart';
 
-class _HorizontalDirection {
-  bool isLeft;
-  _HorizontalDirection({this.isLeft = false});
-}
-
 /// This [ScrollPhysics] allows you to block the movement in the horizontal axis.
-/// You can block both right and left movement.
+/// You can block both right and left movements.
 ///
 /// {@tool sample}
 ///
 /// This sample shows a [HorizontalBlockedScrollPhysics] blocking left movement
 ///
 /// ```dart
-/// HorizontalBlockedScrollPhysics(blockLeft: true, blockRight: false);
+/// HorizontalBlockedScrollPhysics(blockLeftMovent: true, blockRightMovement: false);
 /// ```
 /// {@end-tool}
 class HorizontalBlockedScrollPhysics extends ScrollPhysics {
-  final direction = _HorizontalDirection();
-  final bool blockLeft;
-  final bool blockRight;
+  /// If [true] it blocks the left movement.
+  final bool blockLeftMovement;
 
-  HorizontalBlockedScrollPhysics(
-      {ScrollPhysics parent, this.blockLeft = false, this.blockRight = false})
-      : super(parent: parent);
+  /// If [true] it blocks the right movement.
+  final bool blockRightMovement;
+
+  /// If [true] it allows the movement to come back to the center,
+  /// even if a specific horizontal movement is blocked,
+  /// whenever the original movement has not completed a viewport move.
+  final bool allowRecovery;
+
+  const HorizontalBlockedScrollPhysics({
+    ScrollPhysics parent,
+    this.blockLeftMovement = false,
+    this.blockRightMovement = false,
+    this.allowRecovery = true,
+  }) : super(parent: parent);
 
   @override
   HorizontalBlockedScrollPhysics applyTo(ScrollPhysics ancestor) {
     return HorizontalBlockedScrollPhysics(
       parent: buildParent(ancestor),
-      blockLeft: blockLeft,
-      blockRight: blockRight,
+      blockLeftMovement: blockLeftMovement,
+      blockRightMovement: blockRightMovement,
+      allowRecovery: allowRecovery,
     );
   }
 
   @override
-  double applyPhysicsToUserOffset(ScrollMetrics position, double offset) {
-    direction.isLeft = offset.sign >= 0;
-    return offset;
-  }
-
-  @override
   double applyBoundaryConditions(ScrollMetrics position, double value) {
-    //print("applyBoundaryConditions");
     assert(() {
       if (value == position.pixels) {
         throw FlutterError(
@@ -58,6 +57,7 @@ class HorizontalBlockedScrollPhysics extends ScrollPhysics {
       }
       return true;
     }());
+
     if (value < position.pixels &&
         position.pixels <= position.minScrollExtent) {
       return value - position.pixels;
@@ -81,8 +81,36 @@ class HorizontalBlockedScrollPhysics extends ScrollPhysics {
       return value - position.maxScrollExtent;
     }
 
-    if ((direction.isLeft && blockLeft) || (!direction.isLeft && blockRight)) {
-      // block horizontal
+    // If true, movement goes to the left. If it's a swipe, it goes to the left.
+    var isMovingLeft = value > position.pixels;
+    var screenIndex = (value / position.viewportDimension).floor();
+    var pointInScreen = value - (screenIndex * position.viewportDimension);
+    // If true, the middle point of the screen is in the left side of the screen.
+    // This will be useful in order to not block some movements when in returning position.
+    var isPointInScreenLeftRange =
+        pointInScreen < (position.viewportDimension / 2);
+
+    // We're moving left and we want to block.
+    // In case [allowRecovery] is true,
+    // then we only want to block left movement in case the middle point of the screen
+    // has already moved before the middle of the screen. This will allow the screen to automatically
+    // go to the middle point (this would be effectively moving to the left) in case the page swipe
+    // has not been completed.
+    if (isMovingLeft &&
+        blockLeftMovement &&
+        (!allowRecovery || isPointInScreenLeftRange)) {
+      return value - position.pixels;
+    }
+
+    // We're moving right and we want to block.
+    // In case [allowRecovery] is true,
+    // then we only want to block right movement in case the middle point of the screen
+    // has already moved beyond the middle of the screen. This will allow the screen to automatically
+    // go to the middle point (this would be effectively moving to the right) in case the page swipe
+    // has not been completed while trying to go.
+    if (!isMovingLeft &&
+        blockRightMovement &&
+        (!allowRecovery || !isPointInScreenLeftRange)) {
       return value - position.pixels;
     }
 

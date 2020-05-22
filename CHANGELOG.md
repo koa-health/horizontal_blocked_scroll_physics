@@ -1,3 +1,7 @@
+## [1.1.3] - 2020-05-22.
+
+* Reduced image size in readme.
+
 ## [1.1.2] - 2020-05-22.
 
 * Fixed link to images in readme.

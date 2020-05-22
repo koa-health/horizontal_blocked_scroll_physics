@@ -19,7 +19,7 @@ HorizontalBlockedScrollPhysics(blockLeftMovement: true);
 
 You can see here that the user is `swiping` to the left (which is blocked) but the screen will be able to move to the left if the movement is not completed. Note that the text will go back to the center.
 
-![swiping_left_recovery](assets/block_left_recovery.gif)
+<img src="assets/block_left_recovery.gif" width="350">
 
 ### Blocking movement without allowRecovery
 
@@ -29,4 +29,5 @@ HorizontalBlockedScrollPhysics(blockLeftMovement: true, allowRecovery: false);
 
 This case is similar to the previous one except that this time the screen won't return to the center position as all the left movement is always blocked.
 
-![swiping_left_no_recovery](assets/block_left_no_recovery.gif)
+<img src="assets/block_left_no_recovery.gif" width="350">
+

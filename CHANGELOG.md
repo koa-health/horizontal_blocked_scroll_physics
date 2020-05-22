@@ -1,3 +1,7 @@
+## [1.1.1] - 2020-05-22.
+
+* Fixed errors in overscroll calculation when movement is too fast.
+
 ## [1.1.0] - 2020-05-18.
 
 * Improved the blocking movement. Now it allows the view to recover in case the swipe movement is not fully completed.

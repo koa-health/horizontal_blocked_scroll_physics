@@ -99,7 +99,7 @@ class HorizontalBlockedScrollPhysics extends ScrollPhysics {
     if (isMovingLeft &&
         blockLeftMovement &&
         (!allowRecovery || isPointInScreenLeftRange)) {
-      return value - position.pixels;
+      return pointInScreen;
     }
 
     // We're moving right and we want to block.
@@ -111,7 +111,7 @@ class HorizontalBlockedScrollPhysics extends ScrollPhysics {
     if (!isMovingLeft &&
         blockRightMovement &&
         (!allowRecovery || !isPointInScreenLeftRange)) {
-      return value - position.pixels;
+      return pointInScreen;
     }
 
     return super.applyBoundaryConditions(position, value);

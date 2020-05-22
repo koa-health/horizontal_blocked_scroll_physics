@@ -6,10 +6,21 @@ class MovementResult {
   final double result;
   final double value;
   final double pixels;
+  final double viewportDimension;
 
-  MovementResult({this.result, this.value, this.pixels});
+  MovementResult({
+    this.result,
+    this.value,
+    this.pixels,
+    this.viewportDimension,
+  });
 
-  bool get hasBeenBlocked => result == value - pixels;
+  bool get hasBeenBlocked {
+    var screenIndex = (value / viewportDimension).floor();
+    var pointInScreen = value - (screenIndex * viewportDimension);
+    return result == pointInScreen;
+  }
+
   bool get hasNotBeenBlocked => result == 0.0;
 }
 
@@ -23,7 +34,12 @@ MovementResult moveLeftInLeftRange(HorizontalBlockedScrollPhysics hs) {
   );
   var value = 40.0;
   var result = hs.applyBoundaryConditions(position, value);
-  return MovementResult(result: result, value: value, pixels: position.pixels);
+  return MovementResult(
+    result: result,
+    value: value,
+    pixels: position.pixels,
+    viewportDimension: position.viewportDimension,
+  );
 }
 
 MovementResult moveLeftNotInLeftRange(HorizontalBlockedScrollPhysics hs) {
@@ -36,7 +52,12 @@ MovementResult moveLeftNotInLeftRange(HorizontalBlockedScrollPhysics hs) {
   );
   var value = 70.0;
   var result = hs.applyBoundaryConditions(position, value);
-  return MovementResult(result: result, value: value, pixels: position.pixels);
+  return MovementResult(
+    result: result,
+    value: value,
+    pixels: position.pixels,
+    viewportDimension: position.viewportDimension,
+  );
 }
 
 MovementResult moveRightInLeftRange(HorizontalBlockedScrollPhysics hs) {
@@ -49,7 +70,12 @@ MovementResult moveRightInLeftRange(HorizontalBlockedScrollPhysics hs) {
   );
   var value = 8.0;
   var result = hs.applyBoundaryConditions(position, value);
-  return MovementResult(result: result, value: value, pixels: position.pixels);
+  return MovementResult(
+    result: result,
+    value: value,
+    pixels: position.pixels,
+    viewportDimension: position.viewportDimension,
+  );
 }
 
 MovementResult moveRightNotInLeftRange(HorizontalBlockedScrollPhysics hs) {
@@ -62,7 +88,12 @@ MovementResult moveRightNotInLeftRange(HorizontalBlockedScrollPhysics hs) {
   );
   var value = 60.0;
   var result = hs.applyBoundaryConditions(position, value);
-  return MovementResult(result: result, value: value, pixels: position.pixels);
+  return MovementResult(
+    result: result,
+    value: value,
+    pixels: position.pixels,
+    viewportDimension: position.viewportDimension,
+  );
 }
 
 void main() {

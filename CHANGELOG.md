@@ -1,3 +1,7 @@
+## [1.1.4] - 2020-05-22.
+
+* Fixed image reduction for pub.dev.
+
 ## [1.1.3] - 2020-05-22.
 
 * Reduced image size in readme.

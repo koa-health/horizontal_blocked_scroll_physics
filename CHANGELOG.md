@@ -1,3 +1,7 @@
+## [1.1.2] - 2020-05-22.
+
+* Fixed link to images in readme.
+
 ## [1.1.1] - 2020-05-22.
 
 * Fixed errors in overscroll calculation when movement is too fast.

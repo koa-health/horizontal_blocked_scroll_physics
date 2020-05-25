@@ -18,16 +18,10 @@ class HorizontalBlockedScrollPhysics extends ScrollPhysics {
   /// If [true] it blocks the right movement.
   final bool blockRightMovement;
 
-  /// If [true] it allows the movement to come back to the center,
-  /// even if a specific horizontal movement is blocked,
-  /// whenever the original movement has not completed a viewport move.
-  final bool allowRecovery;
-
   const HorizontalBlockedScrollPhysics({
     ScrollPhysics parent,
     this.blockLeftMovement = false,
     this.blockRightMovement = false,
-    this.allowRecovery = true,
   }) : super(parent: parent);
 
   @override
@@ -36,7 +30,6 @@ class HorizontalBlockedScrollPhysics extends ScrollPhysics {
       parent: buildParent(ancestor),
       blockLeftMovement: blockLeftMovement,
       blockRightMovement: blockRightMovement,
-      allowRecovery: allowRecovery,
     );
   }
 
@@ -89,29 +82,20 @@ class HorizontalBlockedScrollPhysics extends ScrollPhysics {
     // This will be useful in order to not block some movements when in returning position.
     var isPointInScreenLeftRange =
         pointInScreen < (position.viewportDimension / 2);
+    var delta = value - position.pixels;
 
     // We're moving left and we want to block.
-    // In case [allowRecovery] is true,
-    // then we only want to block left movement in case the middle point of the screen
-    // has already moved before the middle of the screen. This will allow the screen to automatically
-    // go to the middle point (this would be effectively moving to the left) in case the page swipe
-    // has not been completed.
-    if (isMovingLeft &&
-        blockLeftMovement &&
-        (!allowRecovery || isPointInScreenLeftRange)) {
-      return pointInScreen;
+    if (isMovingLeft && blockLeftMovement && isPointInScreenLeftRange) {
+      if (pointInScreen.abs() < delta.abs()) {
+        // fix for strong movements
+        return pointInScreen;
+      }
+      return delta;
     }
 
     // We're moving right and we want to block.
-    // In case [allowRecovery] is true,
-    // then we only want to block right movement in case the middle point of the screen
-    // has already moved beyond the middle of the screen. This will allow the screen to automatically
-    // go to the middle point (this would be effectively moving to the right) in case the page swipe
-    // has not been completed while trying to go.
-    if (!isMovingLeft &&
-        blockRightMovement &&
-        (!allowRecovery || !isPointInScreenLeftRange)) {
-      return pointInScreen;
+    if (!isMovingLeft && blockRightMovement && !isPointInScreenLeftRange) {
+      return delta;
     }
 
     return super.applyBoundaryConditions(position, value);

@@ -18,7 +18,13 @@ class MovementResult {
   bool get hasBeenBlocked {
     var screenIndex = (value / viewportDimension).floor();
     var pointInScreen = value - (screenIndex * viewportDimension);
-    return result == pointInScreen;
+    var delta = value - pixels;
+
+    if (pointInScreen.abs() > delta.abs()) {
+      return result == delta;
+    } else {
+      return result == pointInScreen;
+    }
   }
 
   bool get hasNotBeenBlocked => result == 0.0;
@@ -103,11 +109,6 @@ void main() {
     expect(hs.blockRightMovement, false);
   });
 
-  test('allowRecovery by default', () {
-    var hs = HorizontalBlockedScrollPhysics();
-    expect(hs.allowRecovery, true);
-  });
-
   test('constructor will set blockLeftMovement', () {
     var hs = HorizontalBlockedScrollPhysics(blockLeftMovement: true);
     expect(hs.blockLeftMovement, true);
@@ -118,11 +119,6 @@ void main() {
     var hs = HorizontalBlockedScrollPhysics(blockRightMovement: true);
     expect(hs.blockLeftMovement, false);
     expect(hs.blockRightMovement, true);
-  });
-
-  test('constructor will set allowRecovery', () {
-    var hs = HorizontalBlockedScrollPhysics(allowRecovery: false);
-    expect(hs.allowRecovery, false);
   });
 
   test('movement won\'t be blocked by default', () {
@@ -143,53 +139,20 @@ void main() {
   });
 
   test(
-      'if blockLeftMovement is true it won\'t block movement to the left while not in the left range',
-      () {
-    var hs = HorizontalBlockedScrollPhysics(blockLeftMovement: true);
-    var result = moveLeftNotInLeftRange(hs);
-    expect(result.hasNotBeenBlocked, true);
-  });
-
-  test(
-      'if blockLeftMovement is true and not allowRecovery it will always block movement to the left',
+      'blockLeftMovement won\'t block movement to the left while not in the left range',
       () {
     var hs = HorizontalBlockedScrollPhysics(
-        blockLeftMovement: true, allowRecovery: false);
+      blockLeftMovement: true,
+    );
     var result = moveLeftNotInLeftRange(hs);
-    expect(result.hasBeenBlocked, true);
-    result = moveLeftInLeftRange(hs);
-    expect(result.hasBeenBlocked, true);
+    expect(
+      result.hasNotBeenBlocked,
+      true,
+    );
   });
 
   test(
-      'if blockLeftMovement is true it will block movement to the left while in the left range',
-      () {
-    var hs = HorizontalBlockedScrollPhysics(blockLeftMovement: true);
-    var result = moveLeftInLeftRange(hs);
-    expect(result.hasBeenBlocked, true);
-  });
-
-  test(
-      'if blockRightMovement is true it will block movement to the right while not in the left range',
-      () {
-    var hs = HorizontalBlockedScrollPhysics(blockRightMovement: true);
-    var result = moveRightNotInLeftRange(hs);
-    expect(result.hasBeenBlocked, true);
-  });
-
-  test(
-      'if blockRightMovement is true and not allowRecovery it will always block movement to the right',
-      () {
-    var hs = HorizontalBlockedScrollPhysics(
-        blockRightMovement: true, allowRecovery: false);
-    var result = moveRightNotInLeftRange(hs);
-    expect(result.hasBeenBlocked, true);
-    result = moveRightInLeftRange(hs);
-    expect(result.hasBeenBlocked, true);
-  });
-
-  test(
-      'if blockRightMovement is true it won\'t block movement to the right while in the left range',
+      'blockRightMovement won\'t block movement to the right while in the left range',
       () {
     var hs = HorizontalBlockedScrollPhysics(blockRightMovement: true);
     var result = moveRightInLeftRange(hs);
@@ -197,38 +160,43 @@ void main() {
   });
 
   test(
-      'if blockRightMovement and blockLeftMovement are true it will block all movement except right in left range and left not in left range',
+      'blockLeftMovement won\'t block movement to the left while not in the left range',
       () {
-    var hs = HorizontalBlockedScrollPhysics(
-      blockRightMovement: true,
-      blockLeftMovement: true,
-    );
-    MovementResult result;
-
-    // test left in left range
-    result = moveLeftInLeftRange(hs);
-    expect(result.hasBeenBlocked, true);
-
-    // test left not in left range
-    result = moveLeftNotInLeftRange(hs);
+    var hs = HorizontalBlockedScrollPhysics(blockLeftMovement: true);
+    var result = moveLeftNotInLeftRange(hs);
     expect(result.hasNotBeenBlocked, true);
+  });
 
-    // test right in left range
-    result = moveRightInLeftRange(hs);
+  test(
+      'blockRightMovement won\'t block movement to the right while in the left range',
+      () {
+    var hs = HorizontalBlockedScrollPhysics(blockRightMovement: true);
+    var result = moveRightInLeftRange(hs);
     expect(result.hasNotBeenBlocked, true);
+  });
 
-    // test right not in left range
-    result = moveRightNotInLeftRange(hs);
+  test(
+      'blockLeftMovement will block movement to the left while in the left range',
+      () {
+    var hs = HorizontalBlockedScrollPhysics(blockLeftMovement: true);
+    var result = moveLeftInLeftRange(hs);
     expect(result.hasBeenBlocked, true);
   });
 
   test(
-      'if blockRightMovement and blockLeftMovement are true and allowRecovery is false it will block all movement ',
+      'blockRightMovement will block movement to the right while not in the left range',
+      () {
+    var hs = HorizontalBlockedScrollPhysics(blockRightMovement: true);
+    var result = moveRightNotInLeftRange(hs);
+    expect(result.hasBeenBlocked, true);
+  });
+
+  test(
+      'blockRightMovement and blockLeftMovement will block all movement except right in left range and left not in left range',
       () {
     var hs = HorizontalBlockedScrollPhysics(
       blockRightMovement: true,
       blockLeftMovement: true,
-      allowRecovery: false,
     );
     MovementResult result;
 
@@ -238,11 +206,11 @@ void main() {
 
     // test left not in left range
     result = moveLeftNotInLeftRange(hs);
-    expect(result.hasBeenBlocked, true);
+    expect(result.hasNotBeenBlocked, true);
 
     // test right in left range
     result = moveRightInLeftRange(hs);
-    expect(result.hasBeenBlocked, true);
+    expect(result.hasNotBeenBlocked, true);
 
     // test right not in left range
     result = moveRightNotInLeftRange(hs);

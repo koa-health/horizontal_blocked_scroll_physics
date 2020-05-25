@@ -1,3 +1,8 @@
+## [2.0.0] - 2020-05-26.
+
+* Fixed issue with overscroll.
+* Introduced a breaking change as allowRecovery is not already supported.
+
 ## [1.1.4] - 2020-05-22.
 
 * Fixed image reduction for pub.dev.

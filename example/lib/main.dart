@@ -35,7 +35,7 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: PageView(
-        physics: HorizontalBlockedScrollPhysics(blockRightMovement: true),
+        physics: RightBlockedScrollPhysics(),
         children: <Widget>[
           Text('1'),
           Text('2'),

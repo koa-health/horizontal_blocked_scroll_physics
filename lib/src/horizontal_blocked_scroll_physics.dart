@@ -101,3 +101,49 @@ class HorizontalBlockedScrollPhysics extends ScrollPhysics {
     return super.applyBoundaryConditions(position, value);
   }
 }
+
+/// This [ScrollPhysics] blocks the left movement in the horizontal axis allowing only movements to the right.
+///
+/// {@tool sample}
+///
+/// This sample shows a [LeftBlockedScrollPhysics] blocking left movement
+///
+/// ```dart
+/// LeftBlockedScrollPhysics();
+/// ```
+/// {@end-tool}
+class LeftBlockedScrollPhysics extends HorizontalBlockedScrollPhysics {
+  const LeftBlockedScrollPhysics({
+    ScrollPhysics parent,
+  }) : super(parent: parent, blockLeftMovement: true);
+
+  @override
+  LeftBlockedScrollPhysics applyTo(ScrollPhysics ancestor) {
+    return LeftBlockedScrollPhysics(
+      parent: buildParent(ancestor),
+    );
+  }
+}
+
+// This [ScrollPhysics] blocks the right movement in the horizontal axis allowing only movements to the left.
+///
+/// {@tool sample}
+///
+/// This sample shows a [RightBlockedScrollPhysics] blocking right movement
+///
+/// ```dart
+/// RightBlockedScrollPhysics();
+/// ```
+/// {@end-tool}
+class RightBlockedScrollPhysics extends HorizontalBlockedScrollPhysics {
+  const RightBlockedScrollPhysics({
+    ScrollPhysics parent,
+  }) : super(parent: parent, blockRightMovement: true);
+
+  @override
+  RightBlockedScrollPhysics applyTo(ScrollPhysics ancestor) {
+    return RightBlockedScrollPhysics(
+      parent: buildParent(ancestor),
+    );
+  }
+}

@@ -1,3 +1,7 @@
+## [3.0.0] - 2020-05-26.
+
+* Provide custom classes for left and right blockage to avoid issues with [scrollable.dart] optimizations.
+
 ## [2.0.0] - 2020-05-26.
 
 * Fixed issue with overscroll.

@@ -1,4 +1,4 @@
-anguage: dart
+language: dart
 dart:
   - stable
 os:

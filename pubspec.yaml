@@ -6,7 +6,7 @@ repository: https://github.com/Alpha-health/horizontal_blocked_scroll_physics
 issue_tracker: https://github.com/Alpha-health/horizontal_blocked_scroll_physics/issues
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
   flutter:

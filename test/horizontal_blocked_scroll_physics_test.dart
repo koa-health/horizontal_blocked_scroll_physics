@@ -9,10 +9,10 @@ class MovementResult {
   final double viewportDimension;
 
   MovementResult({
-    this.result,
-    this.value,
-    this.pixels,
-    this.viewportDimension,
+    required this.result,
+    required this.value,
+    required this.pixels,
+    required this.viewportDimension,
   });
 
   bool get hasBeenBlocked {

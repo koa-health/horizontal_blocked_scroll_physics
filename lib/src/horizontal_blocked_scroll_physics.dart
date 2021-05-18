@@ -19,13 +19,13 @@ class HorizontalBlockedScrollPhysics extends ScrollPhysics {
   final bool blockRightMovement;
 
   const HorizontalBlockedScrollPhysics({
-    ScrollPhysics parent,
+    ScrollPhysics? parent,
     this.blockLeftMovement = false,
     this.blockRightMovement = false,
   }) : super(parent: parent);
 
   @override
-  HorizontalBlockedScrollPhysics applyTo(ScrollPhysics ancestor) {
+  HorizontalBlockedScrollPhysics applyTo(ScrollPhysics? ancestor) {
     return HorizontalBlockedScrollPhysics(
       parent: buildParent(ancestor),
       blockLeftMovement: blockLeftMovement,
@@ -114,11 +114,11 @@ class HorizontalBlockedScrollPhysics extends ScrollPhysics {
 /// {@end-tool}
 class LeftBlockedScrollPhysics extends HorizontalBlockedScrollPhysics {
   const LeftBlockedScrollPhysics({
-    ScrollPhysics parent,
+    ScrollPhysics? parent,
   }) : super(parent: parent, blockLeftMovement: true);
 
   @override
-  LeftBlockedScrollPhysics applyTo(ScrollPhysics ancestor) {
+  LeftBlockedScrollPhysics applyTo(ScrollPhysics? ancestor) {
     return LeftBlockedScrollPhysics(
       parent: buildParent(ancestor),
     );
@@ -137,11 +137,11 @@ class LeftBlockedScrollPhysics extends HorizontalBlockedScrollPhysics {
 /// {@end-tool}
 class RightBlockedScrollPhysics extends HorizontalBlockedScrollPhysics {
   const RightBlockedScrollPhysics({
-    ScrollPhysics parent,
+    ScrollPhysics? parent,
   }) : super(parent: parent, blockRightMovement: true);
 
   @override
-  RightBlockedScrollPhysics applyTo(ScrollPhysics ancestor) {
+  RightBlockedScrollPhysics applyTo(ScrollPhysics? ancestor) {
     return RightBlockedScrollPhysics(
       parent: buildParent(ancestor),
     );

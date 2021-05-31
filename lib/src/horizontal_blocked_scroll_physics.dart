@@ -19,13 +19,13 @@ class HorizontalBlockedScrollPhysics extends ScrollPhysics {
   final bool blockRightMovement;
 
   const HorizontalBlockedScrollPhysics({
-    ScrollPhysics parent,
+    ScrollPhysics? parent,
     this.blockLeftMovement = false,
     this.blockRightMovement = false,
   }) : super(parent: parent);
 
   @override
-  HorizontalBlockedScrollPhysics applyTo(ScrollPhysics ancestor) {
+  HorizontalBlockedScrollPhysics applyTo(ScrollPhysics? ancestor) {
     return HorizontalBlockedScrollPhysics(
       parent: buildParent(ancestor),
       blockLeftMovement: blockLeftMovement,
@@ -37,8 +37,7 @@ class HorizontalBlockedScrollPhysics extends ScrollPhysics {
   double applyBoundaryConditions(ScrollMetrics position, double value) {
     assert(() {
       if (value == position.pixels) {
-        throw FlutterError(
-            '$runtimeType.applyBoundaryConditions() was called redundantly.\n'
+        throw FlutterError('$runtimeType.applyBoundaryConditions() was called redundantly.\n'
             'The proposed new position, $value, is exactly equal to the current position of the '
             'given ${position.runtimeType}, ${position.pixels}.\n'
             'The applyBoundaryConditions method should only be called when the value is '
@@ -51,25 +50,21 @@ class HorizontalBlockedScrollPhysics extends ScrollPhysics {
       return true;
     }());
 
-    if (value < position.pixels &&
-        position.pixels <= position.minScrollExtent) {
+    if (value < position.pixels && position.pixels <= position.minScrollExtent) {
       return value - position.pixels;
     }
 
-    if (position.maxScrollExtent <= position.pixels &&
-        position.pixels < value) {
+    if (position.maxScrollExtent <= position.pixels && position.pixels < value) {
       // overscroll
       return value - position.pixels;
     }
 
-    if (value < position.minScrollExtent &&
-        position.minScrollExtent < position.pixels) {
+    if (value < position.minScrollExtent && position.minScrollExtent < position.pixels) {
       // hit top edge
       return value - position.minScrollExtent;
     }
 
-    if (position.pixels < position.maxScrollExtent &&
-        position.maxScrollExtent < value) {
+    if (position.pixels < position.maxScrollExtent && position.maxScrollExtent < value) {
       // hit bottom edge
       return value - position.maxScrollExtent;
     }
@@ -80,8 +75,7 @@ class HorizontalBlockedScrollPhysics extends ScrollPhysics {
     var pointInScreen = value - (screenIndex * position.viewportDimension);
     // If true, the middle point of the screen is in the left side of the screen.
     // This will be useful in order to not block some movements when in returning position.
-    var isPointInScreenLeftRange =
-        pointInScreen < (position.viewportDimension / 2);
+    var isPointInScreenLeftRange = pointInScreen < (position.viewportDimension / 2);
     var delta = value - position.pixels;
 
     // We're moving left and we want to block.
@@ -114,11 +108,11 @@ class HorizontalBlockedScrollPhysics extends ScrollPhysics {
 /// {@end-tool}
 class LeftBlockedScrollPhysics extends HorizontalBlockedScrollPhysics {
   const LeftBlockedScrollPhysics({
-    ScrollPhysics parent,
+    ScrollPhysics? parent,
   }) : super(parent: parent, blockLeftMovement: true);
 
   @override
-  LeftBlockedScrollPhysics applyTo(ScrollPhysics ancestor) {
+  LeftBlockedScrollPhysics applyTo(ScrollPhysics? ancestor) {
     return LeftBlockedScrollPhysics(
       parent: buildParent(ancestor),
     );
@@ -137,11 +131,11 @@ class LeftBlockedScrollPhysics extends HorizontalBlockedScrollPhysics {
 /// {@end-tool}
 class RightBlockedScrollPhysics extends HorizontalBlockedScrollPhysics {
   const RightBlockedScrollPhysics({
-    ScrollPhysics parent,
+    ScrollPhysics? parent,
   }) : super(parent: parent, blockRightMovement: true);
 
   @override
-  RightBlockedScrollPhysics applyTo(ScrollPhysics ancestor) {
+  RightBlockedScrollPhysics applyTo(ScrollPhysics? ancestor) {
     return RightBlockedScrollPhysics(
       parent: buildParent(ancestor),
     );

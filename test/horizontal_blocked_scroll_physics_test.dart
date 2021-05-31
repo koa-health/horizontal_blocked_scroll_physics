@@ -139,25 +139,33 @@ void main() {
       expect(result, 0.0);
     });
 
-    test('blockLeftMovement won\'t block movement to the left while not in the left range', () {
+    test(
+        'blockLeftMovement won\'t block movement to the left while not in the left range',
+        () {
       var hs = HorizontalBlockedScrollPhysics(blockLeftMovement: true);
       var result = moveLeftNotInLeftRange(hs);
       expect(result.hasNotBeenBlocked, true);
     });
 
-    test('blockRightMovement won\'t block movement to the right while in the left range', () {
+    test(
+        'blockRightMovement won\'t block movement to the right while in the left range',
+        () {
       var hs = HorizontalBlockedScrollPhysics(blockRightMovement: true);
       var result = moveRightInLeftRange(hs);
       expect(result.hasNotBeenBlocked, true);
     });
 
-    test('blockLeftMovement will block movement to the left while in the left range', () {
+    test(
+        'blockLeftMovement will block movement to the left while in the left range',
+        () {
       var hs = HorizontalBlockedScrollPhysics(blockLeftMovement: true);
       var result = moveLeftInLeftRange(hs);
       expect(result.hasBeenBlocked, true);
     });
 
-    test('blockRightMovement will block movement to the right while not in the left range', () {
+    test(
+        'blockRightMovement will block movement to the right while not in the left range',
+        () {
       var hs = HorizontalBlockedScrollPhysics(blockRightMovement: true);
       var result = moveRightNotInLeftRange(hs);
       expect(result.hasBeenBlocked, true);

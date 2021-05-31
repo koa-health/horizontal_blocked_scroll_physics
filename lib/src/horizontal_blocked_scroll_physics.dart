@@ -37,7 +37,8 @@ class HorizontalBlockedScrollPhysics extends ScrollPhysics {
   double applyBoundaryConditions(ScrollMetrics position, double value) {
     assert(() {
       if (value == position.pixels) {
-        throw FlutterError('$runtimeType.applyBoundaryConditions() was called redundantly.\n'
+        throw FlutterError(
+            '$runtimeType.applyBoundaryConditions() was called redundantly.\n'
             'The proposed new position, $value, is exactly equal to the current position of the '
             'given ${position.runtimeType}, ${position.pixels}.\n'
             'The applyBoundaryConditions method should only be called when the value is '
@@ -50,21 +51,25 @@ class HorizontalBlockedScrollPhysics extends ScrollPhysics {
       return true;
     }());
 
-    if (value < position.pixels && position.pixels <= position.minScrollExtent) {
+    if (value < position.pixels &&
+        position.pixels <= position.minScrollExtent) {
       return value - position.pixels;
     }
 
-    if (position.maxScrollExtent <= position.pixels && position.pixels < value) {
+    if (position.maxScrollExtent <= position.pixels &&
+        position.pixels < value) {
       // overscroll
       return value - position.pixels;
     }
 
-    if (value < position.minScrollExtent && position.minScrollExtent < position.pixels) {
+    if (value < position.minScrollExtent &&
+        position.minScrollExtent < position.pixels) {
       // hit top edge
       return value - position.minScrollExtent;
     }
 
-    if (position.pixels < position.maxScrollExtent && position.maxScrollExtent < value) {
+    if (position.pixels < position.maxScrollExtent &&
+        position.maxScrollExtent < value) {
       // hit bottom edge
       return value - position.maxScrollExtent;
     }
@@ -75,7 +80,8 @@ class HorizontalBlockedScrollPhysics extends ScrollPhysics {
     var pointInScreen = value - (screenIndex * position.viewportDimension);
     // If true, the middle point of the screen is in the left side of the screen.
     // This will be useful in order to not block some movements when in returning position.
-    var isPointInScreenLeftRange = pointInScreen < (position.viewportDimension / 2);
+    var isPointInScreenLeftRange =
+        pointInScreen < (position.viewportDimension / 2);
     var delta = value - position.pixels;
 
     // We're moving left and we want to block.

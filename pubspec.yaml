@@ -12,9 +12,8 @@ dependencies:
   flutter:
     sdk: flutter
 
-  pedantic: ^1.11.0
-
 dev_dependencies:
+  flutter_lints: ^1.0.4
   flutter_test:
     sdk: flutter
 

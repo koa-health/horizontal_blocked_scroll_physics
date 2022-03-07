@@ -1,3 +1,7 @@
+## [4.0.1] - 2022-03-07
+
+* Removed deprecated `pedantic` dependency (in favor of `flutter_lints`).
+
 ## [4.0.0] - 2021-05-31
 
 * Migrated the package to null safety.
